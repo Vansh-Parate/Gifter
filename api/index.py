@@ -50,7 +50,7 @@ def setup_cors():
         cors_origins = settings.cors_origins
         logger.info(f"CORS origins: {cors_origins}")
     except Exception as e:
-        logger.warning(f"Failed to load CORS settings: {str(e)}. Using fallback.")
+        # Don't log here as logger might not be ready - just use fallback
         cors_origins = ["*"]  # Allow all origins as fallback
     
     app.add_middleware(
@@ -61,7 +61,18 @@ def setup_cors():
         allow_headers=["*"],
     )
 
-setup_cors()
+# Setup CORS with error handling
+try:
+    setup_cors()
+except Exception as e:
+    # If CORS setup fails, use permissive defaults
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 
 @app.middleware("http")
@@ -80,6 +91,19 @@ async def log_requests(request: Request, call_next):
     )
     
     return response
+
+
+@app.get("/")
+async def root():
+    """Root endpoint - redirect to health check."""
+    return {
+        "message": "Gift Suggestion API",
+        "version": "1.0.0",
+        "endpoints": {
+            "health": "/api/health",
+            "suggest": "/api/suggest-gift"
+        }
+    }
 
 
 @app.get("/api/health")
@@ -103,7 +127,8 @@ async def health_check():
         return {
             "status": "healthy",
             "config_loaded": False,
-            "warning": "Configuration may be incomplete"
+            "warning": "Configuration may be incomplete",
+            "error": str(e)
         }
 
 
