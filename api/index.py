@@ -1,0 +1,131 @@
+"""FastAPI application for the Gift Suggestion API."""
+
+import logging
+import time
+from contextlib import asynccontextmanager
+from typing import AsyncGenerator
+
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+
+try:
+    from .agent import get_gift_suggestions
+    from .config import get_settings
+    from .models import AgentResponse, ErrorResponse, GiftRequest, HealthResponse
+except ImportError:
+    from agent import get_gift_suggestions
+    from config import get_settings
+    from models import AgentResponse, ErrorResponse, GiftRequest, HealthResponse
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+    """Lifespan context manager for startup/shutdown events."""
+    logger.info("Starting Gift Suggestion API...")
+    yield
+    logger.info("Shutting down Gift Suggestion API...")
+
+
+# Create FastAPI app
+app = FastAPI(
+    title="Gift Suggestion API",
+    description="AI-powered gift suggestion service using Pydantic AI",
+    version="1.0.0",
+    lifespan=lifespan,
+)
+
+# Configure CORS
+settings = get_settings()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.cors_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    """Middleware to log all requests and responses."""
+    start_time = time.time()
+    
+    logger.info(f"Request: {request.method} {request.url.path}")
+    
+    response = await call_next(request)
+    
+    process_time = time.time() - start_time
+    logger.info(
+        f"Response: {request.method} {request.url.path} "
+        f"- Status: {response.status_code} - Time: {process_time:.3f}s"
+    )
+    
+    return response
+
+
+@app.get("/api/health", response_model=HealthResponse)
+async def health_check() -> HealthResponse:
+    """Health check endpoint.
+    
+    Returns:
+        HealthResponse: Health status of the API.
+    """
+    return HealthResponse(status="healthy")
+
+
+@app.post(
+    "/api/suggest-gift",
+    response_model=AgentResponse,
+    responses={
+        400: {"model": ErrorResponse},
+        500: {"model": ErrorResponse},
+    }
+)
+async def suggest_gift(request: GiftRequest) -> AgentResponse:
+    """Generate gift suggestions based on user input.
+    
+    Args:
+        request: Gift request with user message and optional context.
+        
+    Returns:
+        AgentResponse: AI-generated gift suggestions.
+        
+    Raises:
+        HTTPException: If the request is invalid or agent fails.
+    """
+    try:
+        logger.info(f"Received gift request: {request.user_message[:50]}...")
+        
+        # Get suggestions from AI agent
+        response = await get_gift_suggestions(request.user_message)
+        
+        return response
+        
+    except ValueError as e:
+        logger.error(f"Validation error: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
+        
+    except Exception as e:
+        logger.error(f"Internal error: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to generate gift suggestions. Please try again."
+        )
+
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    """Global exception handler for unhandled errors."""
+    logger.error(f"Unhandled error: {str(exc)}")
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "An unexpected error occurred."}
+    )

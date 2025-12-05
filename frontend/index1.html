@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Gift Finder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-slate-50 via-slate-50 to-slate-100 text-slate-900 antialiased">
+  <div class="flex min-h-screen items-center justify-center px-4 py-8">
+    <div class="w-full max-w-5xl space-y-8">
+      <!-- Header -->
+      <header class="flex flex-col gap-4 text-center">
+        <div class="inline-flex items-center justify-center gap-2 self-center rounded-full border border-slate-200 bg-white/70 px-4 py-1 shadow-sm backdrop-blur">
+          <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
+            <!-- lucide-gift -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="14" x="2" y="5" rx="2" />
+              <path d="M12 5v14M2 12h20" />
+              <path d="M12 5a3 3 0 1 1 3-3c0 1.657-3 3-3 3Z" />
+              <path d="M12 5a3 3 0 1 0-3-3c0 1.657 3 3 3 3Z" />
+            </svg>
+          </span>
+          <p class="font-['Satoshi'] text-xs font-medium uppercase tracking-[0.18em] text-slate-600">AI Gift Finder</p>
+        </div>
+
+        <div class="space-y-2">
+          <h1 class="font-['Satoshi'] text-4xl tracking-tight font-semibold text-slate-900 sm:text-5xl">
+            Find thoughtful gifts in seconds
+          </h1>
+          <p class="font-['Satoshi'] text-base text-slate-600 sm:text-lg">
+            Describe who you’re buying for and let the assistant suggest personal, on-budget gift ideas.
+          </p>
+        </div>
+      </header>
+
+      <!-- Query card -->
+      <section class="rounded-3xl border border-slate-200 bg-white/80 p-4 shadow-sm backdrop-blur-sm sm:p-6">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+          <div class="flex-1 space-y-3">
+            <div class="flex items-center justify-between gap-3">
+              <div class="flex items-center gap-2">
+                <!-- lucide-user-circle-2 -->
+                <span class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-slate-50 text-slate-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="8" r="4" />
+                    <path d="M6 20a6 6 0 0 1 12 0" />
+                    <circle cx="12" cy="12" r="10" />
+                  </svg>
+                </span>
+                <div class="text-left">
+                  <p class="font-['Satoshi'] text-sm font-medium text-slate-900 tracking-tight">Who are you gifting?</p>
+                  <p class="font-['Satoshi'] text-sm text-slate-500">
+                    Mention their interests, occasion, and budget range.
+                  </p>
+                </div>
+              </div>
+              <span class="font-['Satoshi'] text-xs text-slate-400">0 / 200</span>
+            </div>
+
+            <div class="relative">
+              <textarea
+                class="font-['Satoshi'] block h-32 w-full resize-none rounded-2xl border border-slate-200 bg-slate-50/80 px-4 py-3 text-sm text-slate-900 outline-none ring-0 transition focus:border-emerald-400 focus:bg-white focus:shadow-[0_0_0_1px_rgba(52,211,153,0.3)]"
+                placeholder="e.g. “My 30-year-old brother loves indie games, filter coffee, and hiking. Budget around $80.”"
+              ></textarea>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div class="flex flex-wrap gap-2">
+                <button class="font-['Satoshi'] inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:border-slate-300 hover:bg-slate-50">
+                  <!-- lucide-wand-2 -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 4V2M15 8v-2M11 6H9M21 6h-2M18.364 7.636l-1.414-1.414M18.364 4.364l-1.414 1.414M3 21l7.5-7.5" />
+                    <path d="m10.5 13.5 2 2" />
+                  </svg>
+                  Use a template
+                </button>
+                <button class="font-['Satoshi'] inline-flex items-center gap-1.5 rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-800 hover:border-emerald-200">
+                  <!-- lucide-sparkles -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3v4M14.5 4.5l-3 3M9.5 4.5l3 3" />
+                    <path d="M5 15l1.5-3L8 15l-1.5 3L5 15Z" />
+                    <path d="M17 14l1-2 1 2-1 2-1-2Z" />
+                  </svg>
+                  Quick presets
+                </button>
+              </div>
+
+              <button class="font-['Satoshi'] inline-flex items-center justify-center gap-2 rounded-full bg-emerald-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50">
+                <!-- lucide-compass -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <polygon points="16 8 14.5 14.5 8 16 9.5 9.5 16 8" />
+                </svg>
+                Find gift ideas
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Results -->
+      <section class="space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <div class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 text-emerald-50">
+              <!-- lucide-sparkles -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3v4M14.5 4.5l-3 3M9.5 4.5l3 3" />
+                <path d="M5 15l1.5-3L8 15l-1.5 3L5 15Z" />
+                <path d="M17 14l1-2 1 2-1 2-1-2Z" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="font-['Satoshi'] text-xl tracking-tight font-semibold text-slate-900">
+                Perfect gift ideas
+              </h2>
+              <p class="font-['Satoshi'] text-sm text-slate-500">
+                Curated suggestions based on your description.
+              </p>
+            </div>
+          </div>
+
+          <button class="font-['Satoshi'] inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:border-slate-300 hover:bg-slate-50">
+            <!-- lucide-refresh-ccw -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 2v6h6" />
+              <path d="M21 22v-6h-6" />
+              <path d="M3 10a9 9 0 0 1 15.5-6.5L21 8" />
+              <path d="M21 14a9 9 0 0 1-15.5 6.5L3 16" />
+            </svg>
+            Regenerate ideas
+          </button>
+        </div>
+
+        <div class="grid gap-4 md:grid-cols-3">
+          <!-- Card 1 -->
+          <article class="flex flex-col rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm backdrop-blur-sm sm:p-5">
+            <div class="flex items-start justify-between gap-3">
+              <div class="space-y-1.5">
+                <div class="flex items-center gap-2">
+                  <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-amber-50 text-amber-700">
+                    <!-- lucide-package -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="m7.5 4.27 4.5 2.7 4.5-2.7" />
+                      <path d="M3 7l9 5 9-5" />
+                      <path d="M4 6.8v10.4L12 22l8-4.8V6.8" />
+                    </svg>
+                  </span>
+                  <h3 class="font-['Satoshi'] text-base tracking-tight font-semibold text-slate-900">
+                    Shinchan merchandise bundle
+                  </h3>
+                </div>
+                <p class="font-['Satoshi'] text-sm text-slate-600">
+                  Curated set with apparel, stickers, and prints so they can show off their favorite character everywhere.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-4 flex flex-col gap-3">
+              <div class="flex items-center justify-between gap-3">
+                <div class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1">
+                  <!-- lucide-badge-dollar-sign -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 12h8a2 2 0 0 0 0-4H9a2 2 0 0 1 0-4h7" />
+                    <path d="M11 20V4" />
+                    <circle cx="12" cy="12" r="9" />
+                  </svg>
+                  <span class="font-['Satoshi'] text-xs font-medium text-emerald-800">20–50 USD</span>
+                </div>
+                <p class="font-['Satoshi'] text-xs text-slate-500">Easy to ship • Works for most ages</p>
+              </div>
+
+              <div class="space-y-1">
+                <p class="font-['Satoshi'] text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
+                  Where to buy
+                </p>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="font-['Satoshi'] inline-flex items-center rounded-full bg-slate-50 px-2.5 py-1 text-xs text-slate-700">Amazon</span>
+                  <span class="font-['Satoshi'] inline-flex items-center rounded-full bg-slate-50 px-2.5 py-1 text-xs text-slate-700">Hot Topic</span>
+                  <span class="font-['Satoshi'] inline-flex items-center rounded-full bg-slate-50 px-2.5 py-1 text-xs text-slate-700">Anime stores</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="flex flex-col rounded-2xl border border-slate-200 bg-white/90 p-4 shadow-sm backdrop-blur-sm sm:p-5">
+            <div class="flex items-start justify-between gap-3">
+              <div class="space-y-1.5">
+                <div class="flex items-center gap-2">
+                  <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-sky-50 text-sky-700">
+                    <!-- lucide-book-open -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 20V4" />
+                      <path d="M19 20a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3" />
+                      <path d="M19 4a3 3 0 0 0-3 3H7a3 3 0 0 0-3-3" />
+                    </svg>
+                  </span>
+                  <h3 class="font-['Satoshi'] text-base tracking-tight font-semibold text-slate-900">
+                    Shinchan manga collection
+                  </h3>
+                </div>
+                <p class="font-['Satoshi'] text-sm text-slate-600">
+                  A handpicked arc or starter box set to dive into the original manga with high‑quality print editions.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-4 flex flex-col gap-3">
+              <div class="flex items-center justify-between gap-3">
+                <div class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 12h8a2 2 0 0 0 0-4H9a2 2 0 0 1 0-4h7" />
+                    <path d="M11 20V4" />
+                    <circle cx="12" cy="12" r="9" />
+                  </svg>
+                  <span class="font-['Satoshi'] text-xs font-medium text-emerald-800">30–70 USD</span>
+                </div>
+                <p class="font-['Satoshi'] text-xs text-slate-500">For fans who enjoy reading</p>
+              </div>
+
+              <div class="space-y-1">
+                <p class="font-['Satoshi'] text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
+                  Where to buy
+                </p>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="font-['Satoshi'] inline-flex items-center rounded-full bg-slate-50 px-2.5 py-1 text-xs text-slate-700">Amazon</span>
+                  <span class="font-['Satoshi'] inline-flex items-center rounded-full bg-slate-50 px-2.5 py-1 text-xs text-slate-700">Barnes &amp; Noble</span>
+                  <span class="font-['Satoshi'] inline-flex items-center rounded-full bg-slate-50 px-2.5 py-1 text-xs text-slate-700">Book Depository</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="flex flex-col rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm backdrop-blur-sm sm:p-5">
+            <div class="flex items-start justify-between gap-3">
+              <div class="space-y-1.5">
+                <div class="flex items-center gap-2">
+                  <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-rose-50 text-rose-700">
+                    <!-- lucide-plush-toy (using bunny as metaphor: lucide-rabbit) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M13 16a3 3 0 1 1-6 0c0-1.657 1.343-3 3-3s3 1.343 3 3Z" />
+                      <path d="M9 7V4a2 2 0 0 0-4 0v3" />
+                      <path d="M15 7V4a2 2 0 0 1 4 0v3" />
+                      <path d="M7 10a5 5 0 0 1 10 0v2a5 5 0 0 1-10 0v-2Z" />
+                    </svg>
+                  </span>
+                  <h3 class="font-['Satoshi'] text-base tracking-tight font-semibold text-slate-900">
+                    Shinchan plush toy
+                  </h3>
+                </div>
+                <p class="font-['Satoshi'] text-sm text-slate-600">
+                  A soft, high‑quality plush that works as a desk companion or cozy decor piece for their room.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-4 flex flex-col gap-3">
+              <div class="flex items-center justify-between gap-3">
+                <div class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 12h8a2 2 0 0 0 0-4H9a2 2 0 0 1 0-4h7" />
+                    <path d="M11 20V4" />
+                    <circle cx="12" cy="12" r="9" />
+                  </svg>
+                  <span class="font-['Satoshi'] text-xs font-medium text-emerald-800">15–30 USD</span>
+                </div>
+                <p class="font-['Satoshi'] text-xs text-slate-500">Low‑risk, universally lovable</p>
+              </div>
+
+              <div class="space-y-1">
+                <p class="font-['Satoshi'] text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
+                  Where to buy
+                </p>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="font-['Satoshi'] inline-flex items-center rounded-full bg-slate-50 px-2.5 py-1 text-xs text-slate-700">Amazon</span>
+                  <span class="font-['Satoshi'] inline-flex items-center rounded-full bg-slate-50 px-2.5 py-1 text-xs text-slate-700">Anime stores</span>
+                  <span class="font-['Satoshi'] inline-flex items-center rounded-full bg-slate-50 px-2.5 py-1 text-xs text-slate-700">eBay</span>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Pro tip + footer -->
+      <section class="space-y-3">
+        <div class="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-900 px-4 py-3 text-slate-50 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+          <div class="flex items-start gap-3">
+            <span class="mt-0.5 inline-flex h-7 w-7 items-center justify-center rounded-full bg-amber-400/90 text-slate-900">
+              <!-- lucide-lightbulb -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18h6" />
+                <path d="M10 22h4" />
+                <path d="M12 2a7 7 0 0 0-4 12.74V16h8v-1.26A7 7 0 0 0 12 2Z" />
+              </svg>
+            </span>
+            <div class="space-y-1">
+              <p class="font-['Satoshi'] text-sm tracking-tight font-medium text-slate-50">Pro tip</p>
+              <p class="font-['Satoshi'] text-sm text-slate-200">
+                Add a short, handwritten note about a shared memory to make even a simple gift feel personal.
+              </p>
+            </div>
+          </div>
+
+          <button class="font-['Satoshi'] inline-flex items-center gap-1.5 self-start rounded-full border border-slate-600 bg-slate-800 px-3 py-1.5 text-xs font-medium text-slate-100 hover:border-slate-500 hover:bg-slate-700">
+            <!-- lucide-pen-line -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9" />
+              <path d="M16.5 3.5 20.5 7.5 8 20H4v-4L16.5 3.5Z" />
+            </svg>
+            Generate a note
+          </button>
+        </div>
+
+        <footer class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
+          <span class="font-['Satoshi']">Powered by AI suggestions</span>
+          <div class="flex items-center gap-3">
+            <span class="inline-flex items-center gap-1.5">
+              <!-- lucide-shield-check -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+                <path d="m9 12 2 2 4-4" />
+              </svg>
+              <span class="font-['Satoshi']">Private by default</span>
+            </span>
+            <span class="font-['Satoshi']">Thoughtful gifting for everyone</span>
+          </div>
+        </footer>
+      </section>
+    </div>
+  </div>
+</body>
+</html>
