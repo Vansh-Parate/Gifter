@@ -11,19 +11,22 @@ interface ResultsSectionProps {
 
 export default function ResultsSection({ suggestions, onRegenerate }: ResultsSectionProps) {
     return (
-        <section className="rounded-2xl border border-slate-200 bg-white/60 p-6 backdrop-blur-sm animate-fade-in-up">
+        <section className="space-y-6">
             {/* Section Header */}
-            <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+            <div className="flex flex-wrap items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-emerald-600 text-white shadow-sm">
-                        <SparklesIcon className="h-4 w-4" />
+                    <div className="relative">
+                        <div className="absolute inset-0 bg-emerald-500 blur-xl opacity-30"></div>
+                        <div className="relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 text-white shadow-lg">
+                            <SparklesIcon className="h-5 w-5" />
+                        </div>
                     </div>
                     <div>
-                        <h2 className="text-lg font-bold text-slate-900">
+                        <h2 className="font-satoshi text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
                             Perfect gift ideas
                         </h2>
-                        <p className="text-sm text-slate-500">
-                            Curated suggestions based on your description.
+                        <p className="font-satoshi text-sm sm:text-base text-slate-600 mt-1">
+                            Curated suggestions based on your description
                         </p>
                     </div>
                 </div>
@@ -31,16 +34,17 @@ export default function ResultsSection({ suggestions, onRegenerate }: ResultsSec
                 {onRegenerate && (
                     <button
                         onClick={onRegenerate}
-                        className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-600 shadow-sm hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 transition-all"
+                        className="font-satoshi inline-flex items-center gap-2 rounded-xl border-2 border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 hover:shadow-md hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2"
+                        aria-label="Regenerate gift ideas"
                     >
-                        <RefreshIcon className="h-3.5 w-3.5" />
-                        Regenerate ideas
+                        <RefreshIcon className="h-4 w-4" />
+                        <span>Regenerate ideas</span>
                     </button>
                 )}
             </div>
 
             {/* Gift Cards Grid */}
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
                 {suggestions.suggestions.map((suggestion, index) => (
                     <GiftCard key={index} suggestion={suggestion} index={index} />
                 ))}

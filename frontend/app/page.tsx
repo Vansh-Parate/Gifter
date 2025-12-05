@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import QueryCard from "./components/QueryCard";
 import ResultsSection from "./components/ResultsSection";
 import Footer from "./components/Footer";
+import ProTip from "./components/ProTip";
 import LoadingSpinner from "./components/LoadingSpinner";
 
 export interface GiftSuggestion {
@@ -61,9 +62,9 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-50 via-slate-100 to-slate-200 text-slate-900 antialiased">
-      <div className="flex min-h-screen items-center justify-center px-4 py-10 sm:px-6 sm:py-12">
-        <div className="w-full max-w-5xl space-y-6">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-slate-50 to-slate-100 text-slate-900 antialiased">
+      <div className="flex min-h-screen items-center justify-center px-4 py-8">
+        <div className="w-full max-w-5xl space-y-8">
           {/* Header */}
           <Header />
 
@@ -72,7 +73,7 @@ export default function Home() {
 
           {/* Error Message */}
           {error && (
-            <div className="rounded-xl border border-red-200 bg-red-50/90 p-4 animate-scale-in">
+            <div className="rounded-xl border border-red-200 bg-red-50/90 p-4">
               <div className="flex items-center gap-3">
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-100">
                   <span className="text-sm font-bold text-red-600">!</span>
@@ -100,12 +101,20 @@ export default function Home() {
             />
           )}
 
-          {/* Footer */}
-          <div className="pt-4">
-            <Footer />
-          </div>
+          {/* Pro tip + footer */}
+          {suggestions && !isLoading && (
+            <section className="space-y-3">
+              <ProTip
+                tip="Add a short, handwritten note about a shared memory to make even a simple gift feel personal."
+                onGenerateNote={() => {
+                  console.log("Generate note clicked");
+                }}
+              />
+              <Footer />
+            </section>
+          )}
         </div>
       </div>
-    </main>
+    </div>
   );
 }
