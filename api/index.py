@@ -43,14 +43,26 @@ app = FastAPI(
 )
 
 # Configure CORS
-settings = get_settings()
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.cors_origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+try:
+    settings = get_settings()
+    logger.info(f"CORS origins: {settings.cors_origins}")
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.cors_origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+except Exception as e:
+    logger.error(f"Failed to load settings: {str(e)}")
+    # Fallback CORS configuration
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],  # Allow all origins as fallback
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 
 @app.middleware("http")
@@ -129,3 +141,14 @@ async def global_exception_handler(request: Request, exc: Exception):
         status_code=500,
         content={"detail": "An unexpected error occurred."}
     )
+
+
+# Vercel serverless handler
+try:
+    from mangum import Mangum
+    handler = Mangum(app, lifespan="off")
+    logger.info("Mangum handler initialized for Vercel")
+except ImportError as e:
+    logger.warning(f"Mangum not available: {str(e)}")
+    # Fallback if mangum is not available
+    handler = app

@@ -1,10 +1,11 @@
 """Configuration management for the Gift Suggestion API."""
 
+import json
 import os
 from functools import lru_cache
 from typing import List
 
-from pydantic import Field
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -31,6 +32,29 @@ class Settings(BaseSettings):
         default=["http://localhost:3000"],
         description="List of allowed CORS origins"
     )
+    
+    @field_validator("cors_origins", mode="before")
+    @classmethod
+    def parse_cors_origins(cls, v):
+        """Parse CORS origins from environment variable.
+        
+        Supports:
+        - JSON array string: '["http://localhost:3000", "https://example.com"]'
+        - Comma-separated string: 'http://localhost:3000,https://example.com'
+        - List: Already a list
+        """
+        if isinstance(v, str):
+            # Try parsing as JSON first
+            try:
+                parsed = json.loads(v)
+                if isinstance(parsed, list):
+                    return parsed
+            except json.JSONDecodeError:
+                pass
+            
+            # Fall back to comma-separated string
+            return [origin.strip() for origin in v.split(",") if origin.strip()]
+        return v
 
 
 @lru_cache()
