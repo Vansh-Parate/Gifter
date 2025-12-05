@@ -42,8 +42,24 @@ def create_agent() -> Agent[None, AgentResponse]:
     
     Returns:
         Agent: Configured Pydantic AI agent for gift suggestions.
+        
+    Raises:
+        ValueError: If settings cannot be loaded or API key is missing.
     """
-    settings = get_settings()
+    try:
+        settings = get_settings()
+    except Exception as e:
+        logger.error(f"Failed to load settings: {str(e)}")
+        raise ValueError(
+            "Configuration error: Unable to load settings. "
+            "Please check your environment variables in Vercel."
+        ) from e
+    
+    if not settings.openrouter_api_key:
+        raise ValueError(
+            "OPENROUTER_API_KEY is required but not set. "
+            "Please set it in your Vercel project settings."
+        )
     
     # Configure OpenRouter client with custom base_url
     client = AsyncOpenAI(

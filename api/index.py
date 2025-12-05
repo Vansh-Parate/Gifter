@@ -42,27 +42,26 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Configure CORS
-try:
-    settings = get_settings()
-    logger.info(f"CORS origins: {settings.cors_origins}")
+# Configure CORS - load settings lazily to avoid crashes on import
+def setup_cors():
+    """Setup CORS middleware with error handling."""
+    try:
+        settings = get_settings()
+        cors_origins = settings.cors_origins
+        logger.info(f"CORS origins: {cors_origins}")
+    except Exception as e:
+        logger.warning(f"Failed to load CORS settings: {str(e)}. Using fallback.")
+        cors_origins = ["*"]  # Allow all origins as fallback
+    
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings.cors_origins,
+        allow_origins=cors_origins,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
     )
-except Exception as e:
-    logger.error(f"Failed to load settings: {str(e)}")
-    # Fallback CORS configuration
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=["*"],  # Allow all origins as fallback
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+
+setup_cors()
 
 
 @app.middleware("http")
@@ -83,14 +82,29 @@ async def log_requests(request: Request, call_next):
     return response
 
 
-@app.get("/api/health", response_model=HealthResponse)
-async def health_check() -> HealthResponse:
+@app.get("/api/health")
+async def health_check():
     """Health check endpoint.
     
     Returns:
         HealthResponse: Health status of the API.
     """
-    return HealthResponse(status="healthy")
+    try:
+        # Try to load settings to verify configuration
+        settings = get_settings()
+        return {
+            "status": "healthy",
+            "config_loaded": True,
+            "cors_origins": settings.cors_origins
+        }
+    except Exception as e:
+        # Still return healthy but indicate config issue
+        logger.warning(f"Health check: Settings not fully loaded: {str(e)}")
+        return {
+            "status": "healthy",
+            "config_loaded": False,
+            "warning": "Configuration may be incomplete"
+        }
 
 
 @app.post(
@@ -144,11 +158,8 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 
 # Vercel serverless handler
-try:
-    from mangum import Mangum
-    handler = Mangum(app, lifespan="off")
-    logger.info("Mangum handler initialized for Vercel")
-except ImportError as e:
-    logger.warning(f"Mangum not available: {str(e)}")
-    # Fallback if mangum is not available
-    handler = app
+# This must be at module level for Vercel to find it
+from mangum import Mangum
+
+# Disable lifespan events for serverless (they can cause issues)
+handler = Mangum(app, lifespan="off")

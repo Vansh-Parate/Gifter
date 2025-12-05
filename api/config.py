@@ -63,5 +63,18 @@ def get_settings() -> Settings:
     
     Returns:
         Settings: The application settings.
+        
+    Raises:
+        ValueError: If required environment variables are missing.
     """
-    return Settings()
+    try:
+        return Settings()
+    except Exception as e:
+        # Provide helpful error message
+        error_msg = str(e)
+        if "openrouter_api_key" in error_msg.lower():
+            raise ValueError(
+                "OPENROUTER_API_KEY environment variable is required. "
+                "Please set it in your Vercel project settings."
+            ) from e
+        raise
